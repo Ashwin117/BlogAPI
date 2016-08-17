@@ -13,81 +13,102 @@ app.use(bodyParser());
 console.log(`Listening on port:${PORT}`);
 app.listen(PORT);
 
-app.get('/posts/:id', (req, res) => {
-	retrievePost(req)
+app.post('/posts/', (req, res) => {
+	insertPost(req, res)
 	.then((doc) => {
 		res.json(doc);
 	})
-	.catch((err) => {
-		res.send(err);
+});
+
+app.get('/posts/:id', (req, res) => {
+	retrievePost(req, res)
+	.then((doc) => {
+		res.json(doc);
 	})
 });
 
 app.put('/posts/:id', (req, res) => {
-	modifyPost(req, req.body)
+	modifyPost(req, res, req.body)
 	.then((doc) => {
 		res.json(doc);
 	})
-	.catch((err) => {
-		res.send(err);
-	})
-});
-
-app.post('/posts/', (req, res) => {
-	db.posts.insert(req.body, (err, doc) => {
-		if (err) {
-			res.send(err);
-		} else {
-			console.log('Adding blog post...');
-			res.json(doc);
-		}
-	});
 });
 
 app.delete('/posts/:id', (req, res) => {
-	db.posts.remove({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
-		if (err) {
-			res.send(err);
-		} else {
-			console.log('Removing blog post...');
-			res.json(doc);
-		}
-	});
+	deletePost(req)
+	.then((doc) => {
+		res.json(doc);
+	})
 });
 
 app.post('/posts/:id/comments', (req, res) => {
 	retrievePost(req)
 	.then((doc) => {
-		if (!doc.comments) {
-			doc.comments = [];
-		}
+		req.body.id = doc.comments.length;
 		doc.comments.push(req.body);
-		modifyPost(req, doc)
+		modifyPost(req, res, doc)
 		.then((doc) => {
 			res.json(doc);
 		})
-		.catch((err) => {
-			res.send(err);
-		})
-	})
-	.catch((err) => {
-		res.send(err);
 	})
 });
 
-function retrievePost (req) {
+app.put('/posts/:id/comments/:commentid', (req, res) => {
+	retrievePost(req, res)
+	.then((doc) => {
+		doc.comments[req.params.commentid].message = req.body.message
+		modifyPost(req, res, doc)
+		.then((doc) => {
+			res.json(doc)
+		})
+	})
+});
+
+app.delete('/posts/:id/comments/:commentid', (req, res) => {
+	retrievePost(req, res)
+	.then((doc) => {
+		reSizeId(doc.comments, parseInt(req.params.commentid)+1);
+		doc.comments.splice(req.params.commentid, 1);
+		modifyPost(req, res, doc)
+		.then((doc) => {
+			res.json(doc)
+		})
+	})
+});
+
+function insertPost (req, res) {
+	return new Promise ((resolve, reject) => {
+		req.body.comments = [];
+		db.posts.insert(req.body, (err, doc) => {
+			if (err) {
+				reject(err);
+			} else {
+				console.log(`Adding blog post with id ${req.params.id}...`);
+				resolve(doc);
+			}
+		});
+	})
+	.catch((err) => {
+		res.send(err);
+	});
+}
+
+function retrievePost (req, res) {
 	return new Promise ((resolve, reject) => {
 		db.posts.findOne({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
 			if (err) {
 				reject(err);
 			}
-			console.log('Getting blog post...');
+			console.log(`Getting blog post with id ${req.params.id}...`);
 			resolve(doc);
 		});
-	});
+	})
+	.catch((err) => {
+		res.send(err);
+	})
 }
 
-function modifyPost (req, modBody) {
+function modifyPost (req, res, modBody) {
 	return new Promise ((resolve, reject) => {
 		db.posts.findAndModify({query: {_id: mongojs.ObjectId(req.params.id)},
 			update:{$set: modBody},
@@ -96,22 +117,34 @@ function modifyPost (req, modBody) {
 			if (err) {
 				reject(err);
 			} else {
-				console.log('Updating blog post...');
+				console.log(`Updating blog post with id ${req.params.id}...`);
 				resolve(doc);
 			}
 		});
-	});
+	})
+	.catch((err) => {
+		res.send(err);
+	})
 }
 
-function insertPost (req) {
+function deletePost (req, res) {
 	return new Promise ((resolve, reject) => {
-		db.posts.insert(req.body, (err, doc) => {
+		db.posts.remove({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
 			if (err) {
 				reject(err);
 			} else {
-				console.log('Adding blog post...');
+				console.log(`Removing blog post with id ${req.params.id}...`);
 				resolve(doc);
 			}
 		});
-	});
+	})
+	.catch((err) => {
+		res.send(err);
+	})
+}
+
+function reSizeId (list, index) {
+	for (var i=index; i< list.length; i++) {
+		list[i].id = list[i].id - 1;
+	}
 }
