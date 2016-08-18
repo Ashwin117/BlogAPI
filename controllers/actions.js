@@ -10,6 +10,7 @@ module.exports = {
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
+					return;
 				}
 				console.log(`Adding blog post...`);
 				resolve(doc);
@@ -22,6 +23,7 @@ module.exports = {
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
+					return;
 				}
 				console.log(`Getting blog post with id ${req.params.id}...`);
 				resolve(doc);
@@ -37,6 +39,7 @@ module.exports = {
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
+					return;
 				}
 				console.log(`Updating blog post with id ${req.params.id}...`);
 				resolve(doc);
@@ -49,6 +52,7 @@ module.exports = {
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
+					return;
 				}
 				console.log(`Removing blog post with id ${req.params.id}...`);
 				resolve(doc);
@@ -58,14 +62,19 @@ module.exports = {
 	checkUser(req) {
 		return new Promise ((resolve, reject) => {
 			db.posts.find({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
-				debugger;
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
+					return;
+				}
+				if (doc[0].comments && !doc[0].comments[req.params.commentid]) {
+					reject('That comment does not exist');
+					return;
 				}
 				if (!req.params.commentid && req.user.username !== doc[0].username ||
 					req.params.commentid && req.user.username !== doc[0].comments[req.params.commentid].username) {
 					reject('Invalid user');
+					return;
 				}
 				resolve();
 			});
