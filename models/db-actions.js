@@ -1,6 +1,6 @@
 'use strict';
-const mongojs = require('mongojs');
-const db = mongojs('blog', ['posts']);
+let mongojs = require('mongojs');
+let db = mongojs('blog', ['posts']);
 
 module.exports = {
 	insertPost(req) {
