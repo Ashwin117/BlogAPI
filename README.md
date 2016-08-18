@@ -10,7 +10,7 @@ Here are the two commands to start this game after cloning this repo. Please use
 	> npm install
 	> npm start
 ```
-On another terminal, run a local instance of mongodb
+On another terminal, run a local instance of MongoDB
 
 ```
 	> mongod
@@ -25,6 +25,7 @@ This link contains the collection of various requests that this API can handle.
 
 ###Cool features of this game###
 1. Uses `stormpath` for authentication.
+1. Uses `mongodb` as the database for storage and `mongojs` to communicate with it.
 1. Uses ES6 for writing code as smoothly as possible.
 1. Uses Promises everywhere!
 1. Uses `sinon`, `rewire`, and `mocha` for unit testing along with `istanbul` for looking at code coverage.
