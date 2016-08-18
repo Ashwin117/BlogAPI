@@ -21,9 +21,6 @@ app.use(stormpath.init(app, {
 app.use(morgan('combined'));
 app.use(bodyParser());
 
-console.log(`Listening on port:${PORT}`);
-app.listen(PORT);
-
 app.post('/posts/', stormpath.apiAuthenticationRequired, blogPosts.createBlogPost);
 
 app.get('/posts/:id', blogPosts.retrieveBlogPosts);
@@ -37,3 +34,6 @@ app.post('/posts/:id/comments', stormpath.apiAuthenticationRequired, blogComment
 app.put('/posts/:id/comments/:commentid', stormpath.apiAuthenticationRequired, blogComments.modifyComment);
 
 app.delete('/posts/:id/comments/:commentid', stormpath.apiAuthenticationRequired, blogComments.deleteComment);
+
+console.log(`Listening on port:${PORT}`);
+app.listen(PORT);

@@ -15,5 +15,10 @@
     "express-stormpath": "^3.1.5",
     "mongojs": "^2.4.0",
     "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2",
+    "rewire": "^2.5.2",
+    "sinon": "^1.17.5"
   }
 }
