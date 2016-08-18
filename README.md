@@ -4,11 +4,16 @@ This is a pure back-end only API that allows an authenticated user to post blog 
 
 ###Getting Started###
 
-Here are the two commands to start this game after cloning this repo. I recommend using node 4 as the repo is littered with ES6.
+Here are the two commands to start this game after cloning this repo. Please use node 4 as the repo is littered with ES6.
 
 ```
 	> npm install
 	> npm start
+```
+On another terminal, run a local instance of mongodb
+
+```
+	> mongod
 ```
 
 You can run `> npm run cover` or `> npm test`as this repo has tested for 100% code coverage for the models folder.
