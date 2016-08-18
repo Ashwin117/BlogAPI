@@ -1,6 +1,7 @@
 'use strict';
 let mongojs = require('mongojs');
 let db = mongojs('blog', ['posts']);
+let errorCodes = require('./errorCodes');
 
 module.exports = {
 	insertPost(req) {
@@ -8,7 +9,7 @@ module.exports = {
 			req.body.comments = [];
 			db.posts.insert(req.body, (err, doc) => {
 				if (err || !doc || doc.length === 0) {
-					err = err || 400;
+					err = err || errorCodes.badRequest;
 					reject(err);
 					return;
 				}
@@ -21,7 +22,7 @@ module.exports = {
 		return new Promise ((resolve, reject) => {
 			db.posts.findOne({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
 				if (err || !doc || doc.length === 0) {
-					err = err || 400;
+					err = err || errorCodes.badRequest;
 					reject(err);
 					return;
 				}
@@ -37,7 +38,7 @@ module.exports = {
 				new: true
 			}, function(err, doc) {
 				if (err || !doc || doc.length === 0) {
-					err = err || 400;
+					err = err || errorCodes.badRequest;
 					reject(err);
 					return;
 				}
@@ -50,7 +51,7 @@ module.exports = {
 		return new Promise ((resolve, reject) => {
 			db.posts.remove({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
 				if (err || !doc || doc.length === 0) {
-					err = err || 400;
+					err = err || errorCodes.badRequest;
 					reject(err);
 					return;
 				}
@@ -63,17 +64,17 @@ module.exports = {
 		return new Promise ((resolve, reject) => {
 			db.posts.find({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
 				if (err || !doc || doc.length === 0) {
-					err = err || 400;
+					err = err || errorCodes.badRequest;
 					reject(err);
 					return;
 				}
 				if (req.params.commentid && doc[0].comments && !doc[0].comments[req.params.commentid]) {
-					reject('That comment does not exist');
+					reject(errorCodes.notFound);
 					return;
 				}
 				if (!req.params.commentid && req.user.username !== doc[0].username ||
 					req.params.commentid && doc[0].comments && req.user.username !== doc[0].comments[req.params.commentid].username) {
-					reject('Invalid user');
+					reject(errorCodes.unauthorized);
 					return;
 				}
 				resolve();

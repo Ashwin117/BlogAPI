@@ -3,6 +3,7 @@
 const rewire = require('rewire');
 const mongojs = require('mongojs');
 const dbActions = rewire('../../models/db-actions');
+const errorCodes = rewire('../../models/errorCodes');
 const sinon = require('sinon');
 const expect = require('chai').expect;
 const ERROR_CODE = 400;
@@ -46,7 +47,8 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.insertPost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				console.log(err);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -58,7 +60,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.insertPost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -118,7 +120,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.retrievePost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -130,7 +132,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.retrievePost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -190,7 +192,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.modifyPost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -202,7 +204,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.modifyPost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -262,7 +264,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.deletePost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -274,7 +276,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.deletePost(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -335,7 +337,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -347,7 +349,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal(ERROR_CODE);
+				expect(err).to.deep.equal(errorCodes.badRequest);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -367,7 +369,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal('That comment does not exist');
+				expect(err).to.deep.equal(errorCodes.notFound);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -387,7 +389,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal('Invalid user');
+				expect(err).to.deep.equal(errorCodes.unauthorized);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -408,7 +410,7 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal('Invalid user');
+				expect(err).to.deep.equal(errorCodes.unauthorized);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
