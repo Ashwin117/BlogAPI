@@ -22,14 +22,13 @@ module.exports = {
 		req.body.username = req.user && req.user.username;
 		dbActions.checkUser(req)
 		.then(() => {
-			actions.modifyPost(req, req.body)
+			dbActions.modifyPost(req, req.body)
 			.then(responseHandler.handleSuccess(res))
 			.catch(responseHandler.handleError(res))
 		})
 		.catch(responseHandler.handleError(res))
 	},
 	deleteBlogPost (req, res) {
-		debugger;
 		dbActions.checkUser(req)
 		.then(() => {
 			dbActions.deletePost(req)

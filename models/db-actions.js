@@ -7,8 +7,8 @@ module.exports = {
 		return new Promise ((resolve, reject) => {
 			req.body.comments = [];
 			db.posts.insert(req.body, (err, doc) => {
-				if (err || !doc) {
-					err = err || 500;
+				if (err || !doc || doc.length === 0) {
+					err = err || 400;
 					reject(err);
 					return;
 				}
@@ -20,8 +20,8 @@ module.exports = {
 	retrievePost(req) {
 		return new Promise ((resolve, reject) => {
 			db.posts.findOne({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
-				if (err || !doc) {
-					err = err || 500;
+				if (err || !doc || doc.length === 0) {
+					err = err || 400;
 					reject(err);
 					return;
 				}
@@ -36,8 +36,8 @@ module.exports = {
 				update:{$set: modBody},
 				new: true
 			}, function(err, doc) {
-				if (err || !doc) {
-					err = err || 500;
+				if (err || !doc || doc.length === 0) {
+					err = err || 400;
 					reject(err);
 					return;
 				}
@@ -47,13 +47,10 @@ module.exports = {
 		})
 	},
 	deletePost(req) {
-		debugger;
 		return new Promise ((resolve, reject) => {
-			debugger;
 			db.posts.remove({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
-				debugger;
-				if (err || !doc) {
-					err = err || 500;
+				if (err || !doc || doc.length === 0) {
+					err = err || 400;
 					reject(err);
 					return;
 				}
@@ -65,17 +62,17 @@ module.exports = {
 	checkUser(req) {
 		return new Promise ((resolve, reject) => {
 			db.posts.find({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
-				if (err || !doc) {
-					err = err || 500;
+				if (err || !doc || doc.length === 0) {
+					err = err || 400;
 					reject(err);
 					return;
 				}
-				if (doc[0].comments && req.params.commentid && !doc[0].comments[req.params.commentid]) {
+				if (req.params.commentid && doc[0].comments && !doc[0].comments[req.params.commentid]) {
 					reject('That comment does not exist');
 					return;
 				}
 				if (!req.params.commentid && req.user.username !== doc[0].username ||
-					req.params.commentid && req.user.username !== doc[0].comments[req.params.commentid].username) {
+					req.params.commentid && doc[0].comments && req.user.username !== doc[0].comments[req.params.commentid].username) {
 					reject('Invalid user');
 					return;
 				}

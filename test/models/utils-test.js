@@ -8,7 +8,6 @@ describe('Utils', () => {
 		it('Resizes the ids in a list', () => {
 			const list = [{id:3}, {id:4}, {id:5}, {id:6}];
 			utils.reSizeIds(list, 1);
-			console.log(list);
 			expect(list).to.deep.equal([{id:3}, {id:3}, {id:4}, {id:5}]);
 		});
 	});

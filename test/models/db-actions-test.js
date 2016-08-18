@@ -5,6 +5,7 @@ const mongojs = require('mongojs');
 const dbActions = rewire('../../models/db-actions');
 const sinon = require('sinon');
 const expect = require('chai').expect;
+const ERROR_CODE = 400;
 
 describe('DB Actions', () => {
 	describe('Insert Post', () => {
@@ -45,7 +46,19 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.insertPost(req)
 			.catch((err) => {
-				expect(err).to.equal(500);
+				expect(err).to.equal(ERROR_CODE);
+				dbActions.__set__({ 'db': db });
+				done();
+			})
+		});
+		it('Rejects when doc is length 0', (done) => {
+			const db = dbActions.__get__('db');
+			dbMock.posts.insert = sinon.stub(dbMock.posts, 'insert');
+			dbMock.posts.insert.callsArgWith(1, null, []);
+			dbActions.__set__({ 'db': dbMock });
+			dbActions.insertPost(req)
+			.catch((err) => {
+				expect(err).to.equal(ERROR_CODE);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -105,7 +118,19 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.retrievePost(req)
 			.catch((err) => {
-				expect(err).to.equal(500);
+				expect(err).to.equal(ERROR_CODE);
+				dbActions.__set__({ 'db': db });
+				done();
+			})
+		});
+		it('Rejects when doc is length 0', (done) => {
+			const db = dbActions.__get__('db');
+			dbMock.posts.findOne = sinon.stub(dbMock.posts, 'findOne');
+			dbMock.posts.findOne.callsArgWith(1, null, []);
+			dbActions.__set__({ 'db': dbMock });
+			dbActions.retrievePost(req)
+			.catch((err) => {
+				expect(err).to.equal(ERROR_CODE);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -153,7 +178,6 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.modifyPost(req)
 			.catch((err) => {
-				console.log(err);
 				expect(err).to.equal(302);
 				dbActions.__set__({ 'db': db });
 				done();
@@ -166,7 +190,19 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.modifyPost(req)
 			.catch((err) => {
-				expect(err).to.equal(500);
+				expect(err).to.equal(ERROR_CODE);
+				dbActions.__set__({ 'db': db });
+				done();
+			})
+		});
+		it('Rejects when doc is length 0', (done) => {
+			const db = dbActions.__get__('db');
+			dbMock.posts.findAndModify = sinon.stub(dbMock.posts, 'findAndModify');
+			dbMock.posts.findAndModify.callsArgWith(1, null, null);
+			dbActions.__set__({ 'db': dbMock });
+			dbActions.modifyPost(req)
+			.catch((err) => {
+				expect(err).to.equal(ERROR_CODE);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -226,7 +262,19 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.deletePost(req)
 			.catch((err) => {
-				expect(err).to.equal(500);
+				expect(err).to.equal(ERROR_CODE);
+				dbActions.__set__({ 'db': db });
+				done();
+			})
+		});
+		it('Rejects when doc is length 0', (done) => {
+			const db = dbActions.__get__('db');
+			dbMock.posts.remove = sinon.stub(dbMock.posts, 'remove');
+			dbMock.posts.remove.callsArgWith(1, null, []);
+			dbActions.__set__({ 'db': dbMock });
+			dbActions.deletePost(req)
+			.catch((err) => {
+				expect(err).to.equal(ERROR_CODE);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -287,7 +335,19 @@ describe('DB Actions', () => {
 			dbActions.__set__({ 'db': dbMock });
 			dbActions.checkUser(req)
 			.catch((err) => {
-				expect(err).to.equal(500);
+				expect(err).to.equal(ERROR_CODE);
+				dbActions.__set__({ 'db': db });
+				done();
+			})
+		});
+		it('Rejects when doc is length 0', (done) => {
+			const db = dbActions.__get__('db');
+			dbMock.posts.find = sinon.stub(dbMock.posts, 'find');
+			dbMock.posts.find.callsArgWith(1, null, []);
+			dbActions.__set__({ 'db': dbMock });
+			dbActions.checkUser(req)
+			.catch((err) => {
+				expect(err).to.equal(ERROR_CODE);
 				dbActions.__set__({ 'db': db });
 				done();
 			})
@@ -299,7 +359,8 @@ describe('DB Actions', () => {
 			const db = dbActions.__get__('db');
 			req.params.commentid = 4;
 			const doc = [{
-				comments: [{username: 'test1@gmail.com'}]
+				comments: [{username: 'test1@gmail.com'}],
+				username: 'test2@gmail.com'
 			}];
 			dbMock.posts.find = sinon.stub(dbMock.posts, 'find');
 			dbMock.posts.find.callsArgWith(1, null, doc);
