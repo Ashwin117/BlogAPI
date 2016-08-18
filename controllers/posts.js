@@ -29,6 +29,7 @@ module.exports = {
 		.catch(responseHandler.handleError(res))
 	},
 	deleteBlogPost (req, res) {
+		debugger;
 		dbActions.checkUser(req)
 		.then(() => {
 			dbActions.deletePost(req)

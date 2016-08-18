@@ -47,8 +47,11 @@ module.exports = {
 		})
 	},
 	deletePost(req) {
+		debugger;
 		return new Promise ((resolve, reject) => {
+			debugger;
 			db.posts.remove({_id: mongojs.ObjectId(req.params.id)}, (err, doc) => {
+				debugger;
 				if (err || !doc) {
 					err = err || 500;
 					reject(err);
@@ -67,7 +70,7 @@ module.exports = {
 					reject(err);
 					return;
 				}
-				if (doc[0].comments && !doc[0].comments[req.params.commentid]) {
+				if (doc[0].comments && req.params.commentid && !doc[0].comments[req.params.commentid]) {
 					reject('That comment does not exist');
 					return;
 				}
