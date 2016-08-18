@@ -19,6 +19,7 @@ This link contains the collection of various requests that this API can handle.
 [Authentication collections](https://www.getpostman.com/collections/f58402c8e20346821094) This link contains the collection of various requests that allows you to register a user and obtain an access token before making requests. Remember, only the author can delete and modify his posts and comments!
 
 ###Cool features of this game###
+1. Uses `stormpath` for authentication.
 1. Uses ES6 for writing code as smoothly as possible.
 1. Uses Promises everywhere!
-1. Uses `sinon`, `rewire`, and `mocha` for unit testing along with `istanbul` for looking at code coverage
+1. Uses `sinon`, `rewire`, and `mocha` for unit testing along with `istanbul` for looking at code coverage.
