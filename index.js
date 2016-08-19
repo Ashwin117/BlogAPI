@@ -35,5 +35,6 @@ app.put('/posts/:id/comments/:commentid', stormpath.apiAuthenticationRequired, b
 
 app.delete('/posts/:id/comments/:commentid', stormpath.apiAuthenticationRequired, blogComments.deleteComment);
 
-console.log(`Listening on port:${PORT}`);
-app.listen(PORT);
+app.listen(PORT, () => {
+	console.log(`Listening on port:${PORT}`);
+});
