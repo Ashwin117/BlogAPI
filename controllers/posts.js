@@ -2,7 +2,7 @@
 
 const dbActions = require('../actions/db-actions');
 const utils = require('../actions/utils');
-const responseHandler = require('./responseHandler');
+const responseHandler = require('./response-handler');
 
 module.exports = {
 	createBlogPost (req, res) {

@@ -4,16 +4,26 @@ This is a pure back-end only API that allows an authenticated user to post blog 
 
 ###Getting Started###
 
-Here are the two commands to start this game after cloning this repo. Please use node 4 as the repo is littered with ES6.
+Here are the commands to start this app after cloning this repo. Please use node 4 as the repo is littered with ES6.
+
+First, run a local instance of MongoDB
+
+```
+	> mongod
+```
+
+Switch to another terminal and set the environment variables:
+
+```
+	> export STORMPATH_CLIENT_APIKEY_ID=7HP4A2HP3Y25ADYKNNGTUXK5O
+	> export STORMPATH_CLIENT_APIKEY_SECRET=Ag+HexjCzJQSp7qNz3yMVdEVCahpypHEtiKVwC6XInI
+	> export STORMPATH_APPLICATION_HREF=https://api.stormpath.com/v1/applications/5mzuITapiJHfjvla4fCoFN
+```
+Then run the following:
 
 ```
 	> npm install
 	> npm start
-```
-On another terminal, run a local instance of MongoDB
-
-```
-	> mongod
 ```
 
 You can run `> npm run cover` or `> npm test`as this repo has tested for 100% code coverage for the models folder.

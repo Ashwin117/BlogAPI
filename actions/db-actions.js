@@ -1,7 +1,7 @@
 'use strict';
 let mongojs = require('mongojs');
 let db = mongojs('blog', ['posts']);
-let errorCodes = require('./errorCodes');
+let errorCodes = require('./error-codes');
 
 module.exports = {
 	insertPost(req) {
