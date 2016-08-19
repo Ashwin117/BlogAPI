@@ -2,8 +2,8 @@
 
 const rewire = require('rewire');
 const mongojs = require('mongojs');
-const dbActions = rewire('../../models/db-actions');
-const errorCodes = rewire('../../models/errorCodes');
+const dbActions = rewire('../../actions/db-actions');
+const errorCodes = rewire('../../actions/errorCodes');
 const sinon = require('sinon');
 const expect = require('chai').expect;
 const ERROR_CODE = 400;

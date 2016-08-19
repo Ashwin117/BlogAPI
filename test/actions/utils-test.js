@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('../../models/utils');
+const utils = require('../../actions/utils');
 const expect = require('chai').expect;
 
 describe('Utils', () => {

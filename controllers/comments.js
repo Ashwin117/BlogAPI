@@ -1,7 +1,7 @@
 'use strict'
 
-const dbActions = require('../models/db-actions');
-const utils = require('../models/utils');
+const dbActions = require('../actions/db-actions');
+const utils = require('../actions/utils');
 const responseHandler = require('./responseHandler');
 
 module.exports = {
