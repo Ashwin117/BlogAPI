@@ -306,7 +306,7 @@ describe('DB Actions', () => {
 				},
 				params: {
 					'id': '117',
-					'commentid': 4
+					'commentid': '4'
 				}
 			}
 			dbMock = {
@@ -399,10 +399,11 @@ describe('DB Actions', () => {
 			req.user.username = 'test1@gmail.com';
 
 			const db = dbActions.__get__('db');
-			req.params.commentid = '0';
+			req.params.commentid = '023';
 			const doc = [{
 				comments: [{
 					message: 'Other people message',
+					id: '023',
 					username: 'test2@gmail.com'}]
 			}];
 			dbMock.posts.find = sinon.stub(dbMock.posts, 'find');
@@ -422,7 +423,7 @@ describe('DB Actions', () => {
 			const db = dbActions.__get__('db');
 			req.params.commentid = '0';
 			const doc = [{
-				comments: [{username: 'test1@gmail.com'}]
+				comments: [{id:'0', username: 'test1@gmail.com'}]
 			}];
 			dbMock.posts.find = sinon.stub(dbMock.posts, 'find');
 			dbMock.posts.find.callsArgWith(1, null, doc);

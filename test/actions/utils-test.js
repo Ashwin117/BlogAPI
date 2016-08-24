@@ -5,10 +5,15 @@ const expect = require('chai').expect;
 
 describe('Utils', () => {
 	describe('ReSizeId', () => {
-		it('Resizes the ids in a list', () => {
+		it('Finds comment id in array of comments', () => {
 			const list = [{id:3}, {id:4}, {id:5}, {id:6}];
-			utils.reSizeIds(list, 1);
-			expect(list).to.deep.equal([{id:3}, {id:3}, {id:4}, {id:5}]);
+			const index = utils.getCommentIndex(4, list);
+			expect(index).to.equal('1');
+		});
+		it('Returns undefined if cannot find comment id in array of comments', () => {
+			const list = [{id:3}, {id:4}, {id:5}, {id:6}];
+			const index = utils.getCommentIndex(34, list);
+			expect(index).to.equal(void(0));
 		});
 	});
 	describe('CheckForProperty', () => {

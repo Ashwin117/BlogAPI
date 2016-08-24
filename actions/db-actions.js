@@ -72,11 +72,11 @@ module.exports = {
 				let foundCommentIndex;
 				if (req.params.commentid && doc[0].comments) {
 					foundCommentIndex = utils.getCommentIndex(req.params.commentid, doc[0].comments);
+					if (!foundCommentIndex) {
+						reject(errorCodes.notFound);
+						return;
+					} 
 				}
-				if (!foundCommentIndex) {
-					reject(errorCodes.notFound);
-					return;
-				} 
 				if (!req.params.commentid && req.user.username !== doc[0].username ||
 					req.params.commentid && doc[0].comments && req.user.username !== doc[0].comments[foundCommentIndex].username) {
 					reject(errorCodes.unauthorized);
