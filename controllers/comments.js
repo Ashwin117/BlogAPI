@@ -10,7 +10,7 @@ module.exports = {
 		req.body.username = req.user && req.user.username;
 		dbActions.retrievePost(req)
 		.then((doc) => {
-			req.body.id = doc.comments.length;
+			req.body.id = new Date().valueOf().toString();
 			doc.comments.push(req.body);
 			dbActions.modifyPost(req, doc)
 			.then(responseHandler.handleSuccess(res))
@@ -24,7 +24,8 @@ module.exports = {
 		.then(() => {
 			dbActions.retrievePost(req)
 			.then((doc) => {
-				doc.comments[req.params.commentid].message = req.body.message
+				let commentIndex = utils.getCommentIndex(req.params.commentid, doc.comments);
+				doc.comments[commentIndex].message = req.body.message
 				dbActions.modifyPost(req, doc)
 				.then(responseHandler.handleSuccess(res))
 				.catch(responseHandler.handleError(res))
@@ -38,8 +39,8 @@ module.exports = {
 		.then(() => {
 			dbActions.retrievePost(req)
 			.then((doc) => {
-				utils.reSizeIds(doc.comments, parseInt(req.params.commentid)+1);
-				doc.comments.splice(req.params.commentid, 1);
+				let commentIndex = utils.getCommentIndex(req.params.commentid, doc.comments);
+				doc.comments.splice(commentIndex, 1);
 				dbActions.modifyPost(req, doc)
 				.then(responseHandler.handleSuccess(res))
 				.catch(responseHandler.handleError(res))
